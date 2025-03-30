@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { OpenMeteoForecastUriParameters, Forecast, HourlyForecast } from '@domain';
 import { CommonHelper } from '@helpers';
 import { LocationService, OpenMeteoService } from '@services';
@@ -22,7 +22,13 @@ export class HomeComponent {
 
   hourlyWeather: HourlyForecast[] = [];
 
-  parameters: OpenMeteoForecastUriParameters | null = null;
+  parameters: OpenMeteoForecastUriParameters = {
+    latitude: 0,
+    longitude: 0,
+    hourly: ["temperature_2m"],
+    current: ['temperature_2m'],
+    timezone: 'auto',
+  };
 
   ngOnInit(): void {
     this.getCurrentLocation();

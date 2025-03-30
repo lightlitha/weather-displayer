@@ -1,4 +1,5 @@
 export class CommonHelper {
+
   public static createQueryString<T extends Record<string, any>>(
     params: T
   ): string {

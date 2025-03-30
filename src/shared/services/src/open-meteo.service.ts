@@ -1,5 +1,5 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { inject, Injectable, signal } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { inject, Injectable } from '@angular/core';
 import { Forecast, OpenMeteoForecastUriParameters } from '@domain';
 import { environment } from '@environment';
 import { CommonHelper } from '@helpers';

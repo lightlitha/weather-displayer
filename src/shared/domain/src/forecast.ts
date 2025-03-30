@@ -1,3 +1,5 @@
+import { Current } from "./current";
+import { CurrentUnits } from "./current-units";
 import { Hourly } from "./hourly";
 import { HourlyUnits } from "./hourly-units";
 
@@ -11,4 +13,6 @@ export interface Forecast {
   elevation: number;
   hourly_units: HourlyUnits;
   hourly: Hourly;
+  current: Current;
+  current_units: CurrentUnits;
 }
