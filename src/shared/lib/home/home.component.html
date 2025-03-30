@@ -1,31 +1,31 @@
 <p-card *ngIf="forecastData else guestContent" header="Weather Report">
-    <ng-template pTemplate="header">
-        <div class="text-center">
-            <h3>Weather for Latitude: {{forecastData.latitude}}, Longitude: {{forecastData.longitude}}</h3>
-            <h5>Timezone: {{forecastData.timezone}} ({{forecastData.timezone_abbreviation}})</h5>
-        </div>
-    </ng-template>
+  <ng-template pTemplate="header">
+    <div class="text-center">
+      <h3>Weather for Latitude: {{forecastData.latitude}}, Longitude: {{forecastData.longitude}}</h3>
+      <h5>Timezone: {{forecastData.timezone}} ({{forecastData.timezone_abbreviation}})</h5>
+    </div>
+  </ng-template>
 
-    <ng-template pTemplate="content">
-            <p-table [value]="hourlyWeather" [rows]="10" [paginator]="true" [rowsPerPageOptions]="[10,20,30]"
-                responsiveLayout="scroll">
-                <ng-template pTemplate="header">
-                    <tr>
-                        <th>Time</th>
-                        <th>Temperature (°C)</th>
-                    </tr>
-                </ng-template>
+  <ng-template pTemplate="content">
+    <p-table [value]="hourlyWeather" [rows]="10" [paginator]="true" [rowsPerPageOptions]="[10,20,30]"
+      responsiveLayout="scroll">
+      <ng-template pTemplate="header">
+        <tr>
+          <th>Time</th>
+          <th>Temperature (°C)</th>
+        </tr>
+      </ng-template>
 
-                <ng-template pTemplate="body" let-hour>
-                    <tr>
-                        <td>{{hour.time | date: 'short'}}</td>
-                        <td>{{hour.temperature_2m}} °C</td>
-                    </tr>
-                </ng-template>
-            </p-table>
-    </ng-template>
+      <ng-template pTemplate="body" let-hour>
+        <tr>
+          <td>{{hour.time | date: 'short'}}</td>
+          <td>{{hour.temperature_2m}} °C</td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </ng-template>
 </p-card>
 
 <ng-template #guestContent>
-    <p>Forecast data is missing</p>
+  <p>Forecast data is missing</p>
 </ng-template>

@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, inject, signal } from '@angular/core';
 import { OpenMeteoForecastUriParameters, Forecast, HourlyForecast } from '@domain';
 import { CommonHelper } from '@helpers';
-import { OpenMeteoService } from '@services';
+import { LocationService, OpenMeteoService } from '@services';
 import { ButtonModule } from 'primeng/button';
 import { TableModule } from 'primeng/table';
 import { CalendarModule } from 'primeng/calendar';
@@ -16,22 +16,29 @@ import { CardModule } from 'primeng/card';
 export class HomeComponent {
   openMeteoService = inject(OpenMeteoService);
 
+  locationService = inject(LocationService);
+
   forecastData: Forecast | null = null;
 
   hourlyWeather: HourlyForecast[] = [];
 
-  parameters: OpenMeteoForecastUriParameters = {
-    latitude: 0,
-    longitude: -13.41,
-    hourly: ['temperature_2m'],
-  };
+  parameters: OpenMeteoForecastUriParameters | null = null;
 
   ngOnInit(): void {
-    this.WeatherReport();  
+    this.getCurrentLocation();
   }
 
-  WeatherReport() {
-    this.openMeteoService.weatherReport(this.parameters).subscribe({
+  getCurrentLocation() {
+    this.locationService.getCurrentLocation().then((coords) => {
+      this.parameters = { ...this.parameters, latitude: coords.latitude, longitude: coords.longitude, hourly: ['temperature_2m'] };
+      this.WeatherReport(this.parameters);
+    }).catch(() => {
+      CommonHelper.exceptionHandling('Location permission denied');
+    });
+  }
+
+  WeatherReport(parameters: OpenMeteoForecastUriParameters) {
+    this.openMeteoService.weatherReport(parameters).subscribe({
       next: (forecast) => {
         this.forecastData = forecast;
         this.hourlyWeather = forecast.hourly.time.map((time, index) => ({
