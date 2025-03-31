@@ -5,7 +5,7 @@
 <ng-template #weatherData>
   <div
     *ngIf="forecastData; else guestContent"
-    class="weather-panel px-4 py-8 md:px-6 lg:px-8"
+    class="weather-panel py-8 md:px-6 lg:px-8"
   >
     <div class="flex align-items-center justify-content-center">
       <div class="w-full p-4 lg:p-7 white-07 max-width-875">
@@ -22,7 +22,7 @@
                     optionValue="value"
                     aria-labelledby="basic"
                   />
-                  <span class="temperature my-5 text-right">
+                  <span class="temperature my-5 text-right w-full sm:w-auto">
                     {{ forecastData.current.temperature_2m
                     }}<sup>{{ forecastData.current_units.temperature_2m }}</sup>
                   </span>
