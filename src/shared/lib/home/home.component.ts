@@ -9,6 +9,7 @@ import { CalendarModule } from 'primeng/calendar';
 import { CardModule } from 'primeng/card';
 import { StyleClassModule } from 'primeng/styleclass'
 import { DividerModule } from 'primeng/divider';
+import moment from 'moment';
 
 @Component({
   selector: 'app-home',
@@ -60,5 +61,9 @@ export class HomeComponent {
         CommonHelper.exceptionHandling(error);
       },
     });
+  }
+
+  now() {
+    return moment().format('LT');
   }
 }
