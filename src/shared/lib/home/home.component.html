@@ -1,121 +1,144 @@
-<div *ngIf="forecastData; else guestContent" class="weather-panel px-4 py-8 md:px-6 lg:px-8">
-  <div class="flex flex-wrap">
-    <div class="w-full lg:w-6 p-4 lg:p-7 white-07">
-      <div class="grid">
-        <div class="col-12">
-          <!-- <strong>{{now()}}</strong> -->
-        </div>
-        <div class="col-12 md:col-6">
-          <div class="flex align-items-start flex-column">
-            <div class="font-medium text-3xl text-900"><span class="temperature my-5">
-                {{ forecastData.current.temperature_2m
-                }}<sup>{{ forecastData.current_units.temperature_2m }}</sup>
-              </span></div>
-          </div>
-        </div>
-        <div class="col-12 md:col-6">
-          <div class="text-left p-3 border-round-sm">
-            <div class="flex align-items-left text-700 flex-column">
-              <div class="flex align-items-left mt-3 text-lg">
-                <span><strong>Humidity:</strong> {{ forecastData.current.relative_humidity_2m
-                  }} <small>{{ forecastData.current_units.relative_humidity_2m }}</small></span>
-              </div>
-              <div class="mr-5 flex align-items-left mt-3 text-lg">
-                <span><strong>Wind:</strong> {{ forecastData.current.wind_speed_10m
-                  }} <small>{{ forecastData.current_units.wind_speed_10m }}</small></span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <p-divider></p-divider>
-      <p-carousel [value]="groupedWeather" [numVisible]="3" [numScroll]="3" [responsiveOptions]="responsiveOptions">
-        <ng-template let-group #item>
-          <div class="white-07 p-2 border-right text-center" (click)="selectDate(group.date)"
-            [ngClass]="{'surface-border': selectedDate !== group.date, 'border-primary': selectedDate === group.date}">
-            <div class="font-medium row" [ngClass]="{'text-primary': selectedDate === group.date}">{{ group.date | momentFormat : 'dddd' }}</div>
-            <small class="mb-2">{{ group.date | momentFormat : 'll' }}</small>
-          </div>
-        </ng-template>
-      </p-carousel>
-    </div>
-    <div class="w-full lg:w-6 p-4 lg:p-7 white-bg">
-      <p-table [value]="hourlyWeather" dataKey="time" selectionMode="single" [(selection)]="selectedPeriod" [rows]="10"
-        [paginator]="true" [rowsPerPageOptions]="[10, 20, 30]" responsiveLayout="scroll">
-        <ng-template pTemplate="header">
-          <tr>
-            <th>Time</th>
-            <th>Temperature {{ forecastData.hourly_units.temperature_2m }}</th>
-          </tr>
-        </ng-template>
-
-        <ng-template pTemplate="body" let-hour>
-          <tr [pSelectableRow]="hour">
-            <td>{{ hour.time | momentFormat : 'LT' }}</td>
-            <td>
-              {{ hour.temperature_2m }}
-              {{ forecastData.hourly_units.temperature_2m }}
-            </td>
-          </tr>
-        </ng-template>
-      </p-table>
-    </div>
-  </div>
+<div *ngIf="apiError(); else weatherData">
+  <app-error [message]="apiError()||''"></app-error>
 </div>
 
-
-<p-card *ngIf="forecastData; else guestContent">
-  <ng-template pTemplate="header">
-    <div class="grid">
-      <div class="col-12 md:col-6">
-        <div class="flex align-items-start flex-column">
-          <div class="font-medium text-3xl text-900"><span class="temperature my-5">
-              {{ forecastData.current.temperature_2m
-              }}<sup>{{ forecastData.current_units.temperature_2m }}</sup>
-            </span></div>
-          <!-- <strong>{{now()}}</strong> -->
+<ng-template #weatherData>
+  <div
+    *ngIf="forecastData; else guestContent"
+    class="weather-panel px-4 py-8 md:px-6 lg:px-8"
+  >
+    <div class="flex align-items-center justify-content-center">
+      <div class="w-full p-4 lg:p-7 white-07 max-width-875">
+        <div class="grid">
+          <div class="col-12 md:col-6">
+            <div class="text-right p-3 border-round-sm">
+              <div class="flex align-items-right text-700 flex-column">
+                <div class="flex align-items-right mt-3 text-3xl">
+                  <p-selectbutton
+                    [options]="tempUnitOptions"
+                    [(ngModel)]="parameters.temperature_unit"
+                    (onOptionClick)="refreshForecast()"
+                    optionLabel="label"
+                    optionValue="value"
+                    aria-labelledby="basic"
+                  />
+                  <span class="temperature my-5 text-right">
+                    {{ forecastData.current.temperature_2m
+                    }}<sup>{{ forecastData.current_units.temperature_2m }}</sup>
+                  </span>
+                </div>
+                {{ currentTime }}
+                <small class="text-right"
+                  >Timezone: {{ forecastData.timezone }}</small
+                >
+              </div>
+            </div>
+          </div>
+          <div class="col-12 md:col-6">
+            <div class="text-left p-3 border-round-sm">
+              <div class="flex align-items-left text-700 flex-column">
+                <div class="flex align-items-left mt-3 text-lg">
+                  <span
+                    ><strong>Humidity:</strong>
+                    {{ forecastData.current.relative_humidity_2m }}
+                    <small>{{
+                      forecastData.current_units.relative_humidity_2m
+                    }}</small></span
+                  >
+                </div>
+                <div class="mr-5 flex align-items-left mt-3 text-lg">
+                  <span
+                    ><strong>Wind:</strong>
+                    {{ forecastData.current.wind_speed_10m }}
+                    <small>{{
+                      forecastData.current_units.wind_speed_10m
+                    }}</small></span
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
+        <p-divider></p-divider>
+        <p-carousel
+          [value]="groupedWeather"
+          [numVisible]="3"
+          [numScroll]="3"
+          [responsiveOptions]="responsiveOptions"
+        >
+          <ng-template let-group #item>
+            <div
+              class="white-07 p-2 border-right text-center"
+              (click)="selectDate(group.date)"
+              [ngClass]="{
+                'surface-border': selectedDate !== group.date,
+                'border-primary': selectedDate === group.date
+              }"
+            >
+              <div
+                class="row"
+                [ngClass]="{
+                  'text-primary font-medium': selectedDate === group.date
+                }"
+              >
+                {{ group.date | momentFormat : "dddd" }}
+              </div>
+              <small class="mb-2">{{ group.date | momentFormat : "ll" }}</small>
+            </div>
+          </ng-template>
+        </p-carousel>
+
+        <p-table
+          [value]="groupedWeather[selectedDateIndex].hours"
+          dataKey="time"
+          selectionMode="single"
+          [(selection)]="selectedPeriod"
+          [rows]="5"
+          [paginator]="true"
+          [rowsPerPageOptions]="[5, 10, 20, 30]"
+          responsiveLayout="scroll"
+        >
+          <ng-template pTemplate="header">
+            <tr>
+              <th>Time</th>
+              <th>{{ forecastData.hourly_units.temperature_2m }}</th>
+            </tr>
+          </ng-template>
+
+          <ng-template pTemplate="body" let-hour>
+            <tr [pSelectableRow]="hour">
+              <td>{{ hour.time | momentFormat : "LT" }}</td>
+              <td>
+                {{ hour.temperature_2m }}
+                {{ forecastData.hourly_units.temperature_2m }}
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
       </div>
-      <div class="col-12 md:col-6">
-        <div class="text-left p-3 border-round-sm">
-          <div class="flex align-items-left text-700 flex-column">
-            <div class="flex align-items-left mt-3">
-              <span><strong>Humidity:</strong> {{ forecastData.current.relative_humidity_2m
-                }} <small>{{ forecastData.current_units.relative_humidity_2m }}</small></span>
+    </div>
+  </div>
+
+  <ng-template #guestContent>
+    <div class="weather-panel px-4 py-8 md:px-6 lg:px-8">
+      <div class="flex align-items-center justify-content-center">
+        <div class="w-full p-4 lg:p-7 white-07 max-width-875">
+          <div class="text-center my-6 relative">
+            <div
+              class="text-6xl mb-3 text-white flex justify-content-center flex-wrap"
+            >
+              <div class="font-bold">Weather Forecast</div>
             </div>
-            <div class="mr-5 flex align-items-left mt-3">
-              <span><strong>Wind:</strong> {{ forecastData.current.wind_speed_10m
-                }} <small>{{ forecastData.current_units.wind_speed_10m }}</small></span>
+            <div
+              class="text-2xl text-white-alpha-70 line-height-3 text-center mx-auto mb-5"
+              style="max-width: 500px"
+            >
+              Weather data is not loaded yet. please wait a few seconds.
             </div>
+            <p-progress-spinner ariaLabel="loading" />
           </div>
         </div>
       </div>
     </div>
   </ng-template>
-
-  <ng-template pTemplate="content">
-    <p-table [value]="hourlyWeather" dataKey="time" selectionMode="single" [(selection)]="selectedPeriod" [rows]="10"
-      [paginator]="true" [rowsPerPageOptions]="[10, 20, 30]" responsiveLayout="scroll">
-      <ng-template pTemplate="header">
-        <tr>
-          <th>Time</th>
-          <th>Temperature {{ forecastData.hourly_units.temperature_2m }}</th>
-        </tr>
-      </ng-template>
-
-      <ng-template pTemplate="body" let-hour>
-        <tr [pSelectableRow]="hour">
-          <td>{{ hour.time | date : "short" }}</td>
-          <td>
-            {{ hour.temperature_2m }}
-            {{ forecastData.hourly_units.temperature_2m }}
-          </td>
-        </tr>
-      </ng-template>
-    </p-table>
-  </ng-template>
-</p-card>
-
-<ng-template #guestContent>
-  <p>Forecast data is missing</p>
 </ng-template>

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
 import { RouterModule } from '@angular/router';
 
@@ -8,5 +8,7 @@ import { RouterModule } from '@angular/router';
   templateUrl: './error.component.html',
 })
 export class ErrorComponent {
+
+  @Input() message: string = "Please check to see if your location is enabled.";
 
 }

@@ -23,7 +23,6 @@
       "@services": ["./src/shared/services"],
       "@helpers": ["./src/shared/helpers"],
       "@pipes": ["./src/shared/pipes"],
-      "@config": ["./src/shared/config"],
       "@environment": ["./src/environments/environment.ts"],
     }
   },
