@@ -1,3 +1,19 @@
 /* You can add global styles to this file, and also import other style files */
 @use 'primeicons/primeicons.css';
 @use 'primeflex/primeflex.css';
+
+body {
+    font-family: 'Poppins';
+    font-size: 22px;
+}
+
+.temperature {
+    font-weight: 300;
+    font-size: 4em;
+    line-height: .2em;
+}
+
+sup {
+    font-size: 2rem;
+    margin-left: 3px;
+}

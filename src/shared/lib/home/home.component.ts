@@ -7,11 +7,13 @@ import { ButtonModule } from 'primeng/button';
 import { TableModule } from 'primeng/table';
 import { CalendarModule } from 'primeng/calendar';
 import { CardModule } from 'primeng/card';
+import { StyleClassModule } from 'primeng/styleclass'
+import { DividerModule } from 'primeng/divider';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
-  imports: [CommonModule, ButtonModule, TableModule, CalendarModule, CardModule],
+  imports: [CommonModule, ButtonModule, TableModule, CalendarModule, CardModule, StyleClassModule, DividerModule],
 })
 export class HomeComponent {
   openMeteoService = inject(OpenMeteoService);
@@ -21,6 +23,8 @@ export class HomeComponent {
   forecastData: Forecast | null = null;
 
   hourlyWeather: HourlyForecast[] = [];
+
+  selectedPeriod: HourlyForecast | null = null;
 
   parameters: OpenMeteoForecastUriParameters = {
     latitude: 0,

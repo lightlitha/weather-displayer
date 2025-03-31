@@ -1,15 +1,17 @@
-<p-card *ngIf="forecastData else guestContent" header="Weather Report">
+<p-card *ngIf="forecastData else guestContent">
   <ng-template pTemplate="header">
     <div class="text-center">
-      <h3>Weather for Latitude: {{forecastData.latitude}}, Longitude: {{forecastData.longitude}}</h3>
+      <h1 class="temperature">{{ forecastData.current.temperature_2m }}<sup>{{ forecastData.current_units.temperature_2m }}</sup></h1>
+
+      <!-- <h3>Weather for Latitude: {{forecastData.latitude}}, Longitude: {{forecastData.longitude}}</h3>
       <h5>Timezone: {{forecastData.timezone}} ({{forecastData.timezone_abbreviation}})</h5>
-      <p>Temperature: {{ forecastData.current.temperature_2m }} {{ forecastData.current_units.temperature_2m }}</p>
-      <p>Time: {{ forecastData.current.time }}</p>
+      <p>Temperature: </p>
+      <p>Time: {{ forecastData.current.time }}</p> -->
     </div>
   </ng-template>
 
   <ng-template pTemplate="content">
-    <p-table [value]="hourlyWeather" [rows]="10" [paginator]="true" [rowsPerPageOptions]="[10,20,30]"
+    <p-table [value]="hourlyWeather" dataKey="time" selectionMode="single" [(selection)]="selectedPeriod" [rows]="10" [paginator]="true" [rowsPerPageOptions]="[10,20,30]"
       responsiveLayout="scroll">
       <ng-template pTemplate="header">
         <tr>
@@ -19,7 +21,7 @@
       </ng-template>
 
       <ng-template pTemplate="body" let-hour>
-        <tr>
+        <tr [pSelectableRow]="hour">
           <td>{{hour.time | date: 'short'}}</td>
           <td>{{hour.temperature_2m}} {{ forecastData.hourly_units.temperature_2m }}</td>
         </tr>
