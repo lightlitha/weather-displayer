@@ -13,13 +13,8 @@ body {
 }
 
 .weather-panel {
-    background: url('../public/images/background-img.jpg') no-repeat center center fixed;
+    background: url('../public/images/background-img.jpg') no-repeat;
     background-size: cover;
-    width: 100vw;
-    height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
 }
 
 .white-07 {

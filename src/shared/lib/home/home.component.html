@@ -1,5 +1,5 @@
 <div *ngIf="apiError(); else weatherData">
-  <app-error [message]="apiError()||''"></app-error>
+  <app-error [message]="apiError() || ''"></app-error>
 </div>
 
 <ng-template #weatherData>
@@ -37,6 +37,16 @@
           <div class="col-12 md:col-6">
             <div class="text-left p-3 border-round-sm">
               <div class="flex align-items-left text-700 flex-column">
+                <div class="mr-5 flex align-items-left mt-3 text-lg">
+                  <span
+                    ><strong>Location: </strong>
+                    <small
+                      >Lat: {{ forecastData.latitude }}, Lon:
+                      {{ forecastData.longitude }}</small
+                    >
+                  </span>
+                </div>
+                <p-divider></p-divider>
                 <div class="flex align-items-left mt-3 text-lg">
                   <span
                     ><strong>Humidity:</strong>
