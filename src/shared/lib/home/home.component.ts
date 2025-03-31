@@ -9,12 +9,17 @@ import { CalendarModule } from 'primeng/calendar';
 import { CardModule } from 'primeng/card';
 import { StyleClassModule } from 'primeng/styleclass'
 import { DividerModule } from 'primeng/divider';
+import { RadioButtonModule } from 'primeng/radiobutton';
+import { FormsModule } from '@angular/forms';
 import moment from 'moment';
+import { CarouselModule } from 'primeng/carousel';
+import { MomentFormatPipe } from '@pipes';
+// import { MomentFormatPipe } from "@pipes";
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
-  imports: [CommonModule, ButtonModule, TableModule, CalendarModule, CardModule, StyleClassModule, DividerModule],
+  imports: [CommonModule, FormsModule, CarouselModule, ButtonModule, RadioButtonModule, TableModule, CalendarModule, CardModule, StyleClassModule, DividerModule, MomentFormatPipe],
 })
 export class HomeComponent {
   openMeteoService = inject(OpenMeteoService);
@@ -27,13 +32,42 @@ export class HomeComponent {
 
   selectedPeriod: HourlyForecast | null = null;
 
+  groupedWeather: { date: string, hours: any[] }[] = [];  // Grouped weather by date
+
+  selectedDate: string = '';
+
   parameters: OpenMeteoForecastUriParameters = {
     latitude: 0,
     longitude: 0,
-    hourly: ["temperature_2m"],
-    current: ['temperature_2m'],
+    hourly: ["temperature_2m", 'wind_speed_10m', 'relative_humidity_2m'],
+    current: ['temperature_2m', 'wind_speed_10m', 'relative_humidity_2m'],
     timezone: 'auto',
   };
+
+  responsiveOptions: any[] = [
+    {
+      breakpoint: '1400px',
+      numVisible: 2,
+      numScroll: 1
+    },
+    {
+      breakpoint: '1199px',
+      numVisible: 3,
+      numScroll: 1
+    },
+    {
+      breakpoint: '767px',
+      numVisible: 2,
+      numScroll: 1
+    },
+    {
+      breakpoint: '575px',
+      numVisible: 1,
+      numScroll: 1
+    }
+  ];
+
+  tier2: number = 0;
 
   ngOnInit(): void {
     this.getCurrentLocation();
@@ -55,7 +89,8 @@ export class HomeComponent {
         this.hourlyWeather = forecast.hourly.time.map((time, index) => ({
           time,
           temperature_2m: forecast.hourly.temperature_2m[index]
-        }))
+        }));
+        this.groupWeatherByDate();
       },
       error: (error) => {
         CommonHelper.exceptionHandling(error);
@@ -63,7 +98,25 @@ export class HomeComponent {
     });
   }
 
-  now() {
-    return moment().format('LT');
+  groupWeatherByDate(): void {
+    const grouped: { [key: string]: any[] } = {};
+
+    this.hourlyWeather.forEach(entry => {
+      const date = entry.time.split('T')[0];  // Extract date (YYYY-MM-DD)
+      if (!grouped[date]) {
+        grouped[date] = [];
+      }
+      grouped[date].push(entry);
+    });
+
+    this.groupedWeather = Object.keys(grouped).map(date => ({
+      date,
+      hours: grouped[date]
+    }));
+  }
+
+  // Select a date and show the hourly data
+  selectDate(date: string): void {
+    this.selectedDate = date;
   }
 }

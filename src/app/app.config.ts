@@ -4,8 +4,8 @@ import { provideRouter } from '@angular/router';
 import { routes } from './app.routes';
 import { provideHttpClient, withFetch } from '@angular/common/http';
 import { providePrimeNG } from 'primeng/config';
-import Aura from '@primeng/themes/aura';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+import { ThemePreset } from './theme';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -14,9 +14,7 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(withFetch()),
     provideAnimationsAsync(),
     providePrimeNG({
-      theme: {
-        preset: Aura
-      },
+      theme: { preset: ThemePreset, options: { darkModeSelector: '.app-dark' } },
     }),
   ],
 };

@@ -1,19 +1,40 @@
 /* You can add global styles to this file, and also import other style files */
+@use './tailwind.css';
 @use 'primeicons/primeicons.css';
 @use 'primeflex/primeflex.css';
+@use './override.scss';
 
 body {
     font-family: 'Poppins';
     font-size: 22px;
+    margin: 0px;
+    padding: 0px;
+    overflow-x: hidden;
+}
+
+.weather-panel {
+    background: url('../public/images/background-img.jpg') no-repeat;
+    background-size: cover;
+}
+
+.white-07 {
+    background-color: rgba(255, 255, 255, .7);
+}
+
+.white-bg {
+    background-color: rgba(255, 255, 255, .9);
 }
 
 .temperature {
     font-weight: 300;
-    font-size: 4em;
-    line-height: .2em;
+    font-size: 3.5em;
 }
 
 sup {
     font-size: 2rem;
     margin-left: 3px;
+}
+
+.border-right {
+    border-right: 1px solid #777;
 }
