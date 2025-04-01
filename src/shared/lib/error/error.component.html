@@ -1,11 +1,96 @@
-
 <div class="surface-section px-4 py-8 md:px-6 lg:px-8">
-    <div style="background: radial-gradient(50% 109137.91% at 50% 50%, rgba(233, 30, 99, 0.1) 0%, rgba(254, 244, 247, 0) 100%);" class="text-center">
-        <span class="bg-white text-pink-500 font-bold text-2xl inline-block px-3">Error</span>
-    </div>
-    <div class="mt-6 mb-5 font-bold text-6xl text-900 text-center">An issue occurred</div>
-    <p class="text-700 text-3xl mt-0 mb-6 text-center">{{ message }}</p>
-    <div class="text-center">
-        <button type="button" pButton pRipple [routerLink]="'/'" label="Go back home" icon="pi pi-home"></button>
-    </div>
+  <div
+    style="
+      background: radial-gradient(
+        50% 109137.91% at 50% 50%,
+        rgba(233, 30, 99, 0.1) 0%,
+        rgba(254, 244, 247, 0) 100%
+      );
+    "
+    class="text-center"
+  >
+    <span class="bg-white text-pink-500 font-bold text-2xl inline-block px-3"
+      >Error</span
+    >
+  </div>
+  <div class="mt-6 mb-5 font-bold text-6xl text-900 text-center">
+    An issue occurred, possible issues are:
+  </div>
+
+  <div class="flex align-items-center justify-content-center">
+    
+    <ul class="list-none px-0 pb-0 pt-4 m-0 border-top-1 surface-border">
+      <li class="py-2">
+        <a
+          class="cursor-pointer flex align-items-center border-round border-1 border-transparent hover:border-300 p-3 transition-colors transition-duration-150"
+        >
+          <span
+            class="inline-flex align-items-center justify-content-center bg-indigo-500 border-round flex-shrink-0"
+            style="height: 52px; width: 52px"
+          >
+            <i class="pi pi-map text-white text-3xl"></i>
+          </span>
+          <div class="ml-3">
+            <span class="text-900 font-medium text-2xl inline-block mb-1"
+              >Location</span
+            >
+            <p class="text-600 m-0 line-height-3">
+              Make sure your location is enabled
+            </p>
+          </div>
+        </a>
+      </li>
+      <li class="py-2">
+        <a
+          class="cursor-pointer flex align-items-center border-round border-1 border-transparent hover:border-300 p-3 transition-colors transition-duration-150"
+        >
+          <span
+            class="inline-flex align-items-center justify-content-center bg-orange-500 border-round flex-shrink-0"
+            style="height: 52px; width: 52px"
+          >
+            <i class="pi pi-globe text-white text-3xl"></i>
+          </span>
+          <div class="ml-3">
+            <span class="text-900 font-medium text-2xl inline-block mb-1"
+              >Network</span
+            >
+            <p class="text-600 m-0 line-height-3">
+              Make sure Open Meteo servers are reachable
+            </p>
+          </div>
+        </a>
+      </li>
+      <li class="pt-2">
+        <a
+          class="cursor-pointer flex align-items-center border-round border-1 border-transparent hover:border-300 p-3 transition-colors transition-duration-150"
+        >
+          <span
+            class="inline-flex align-items-center justify-content-center bg-cyan-500 border-round flex-shrink-0"
+            style="height: 52px; width: 52px"
+          >
+            <i class="pi pi-pencil text-white text-3xl"></i>
+          </span>
+          <div class="ml-3">
+            <span class="text-900 font-medium text-2xl inline-block mb-1"
+              >Data</span
+            >
+            <p class="text-600 m-0 line-height-3">
+              Make sure that any input required has a value
+            </p>
+          </div>
+        </a>
+      </li>
+    </ul>
+  </div>
+
+  <div class="text-center">
+    <button
+      type="button"
+      pButton
+      pRipple
+      [routerLink]="'/'"
+      label="Go back home"
+      icon="pi pi-home"
+    ></button>
+  </div>
 </div>
